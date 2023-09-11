@@ -22,12 +22,14 @@ public class InventoryService {
     @Transactional(readOnly = true)
     public  List<InventoryResponse> isInStock(List<String> skuCode){
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
+                //mapping the inventory object to the inventory respond object
                 .map(inventory ->
                     InventoryResponse.builder()
                             .skuCode(inventory.getSkuCode())
+                            //Check if product is in stock
                             .isInStock(inventory.getQuantity() > 0)
                             .build()
-                ).toList();
+                ).toList(); //send list of InventoryResponse
 
     }
 }
